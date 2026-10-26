@@ -1,0 +1,121 @@
+.flow {
+  padding: 20px 24px 0;
+}
+.absolute {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 20px 24px 0;
+}
+
+.topbar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.exit {
+  width: 44px;
+  height: 44px;
+  margin-left: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.blockCount {
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+}
+.right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pip {
+  height: 40px;
+  padding: 0 14px 0 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 20px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+}
+.pip:active {
+  background: var(--accent-pressed);
+}
+/* Abierta: pasa a contorno para que se vea que ya está andando. */
+.pipOn {
+  background: transparent;
+  color: var(--accent-ink);
+  box-shadow: inset 0 0 0 2px var(--accent-ink);
+}
+.elapsed {
+  min-width: 44px;
+  text-align: right;
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.segments {
+  margin-top: 6px;
+  display: flex;
+  gap: 4px;
+}
+.segment {
+  height: 5px;
+  border-radius: 3px;
+  background: var(--track);
+  overflow: hidden;
+}
+.fill {
+  height: 100%;
+  background: var(--ink);
+  transition: width 420ms var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition-duration: 0s;
+  }
+}
+button.blockCount {
+  min-height: 44px;
+  padding: 0 6px;
+  color: inherit;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+.menu {
+  min-height: 44px;
+  padding: 0 8px;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* Con ✕, MENÚ y FLOTANTE en la misma barra: que el contador no se parta en dos líneas. */
+.blockCount {
+  white-space: nowrap;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}
+.menu {
+  padding: 0 6px;
+}
