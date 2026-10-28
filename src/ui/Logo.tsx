@@ -9,15 +9,12 @@ export function LogoMark({ height = 28, accent }: { height?: number; accent?: st
   )
 }
 
-/** Logo completo: marca + nombre del gimnasio. En la muestra: "TU GIMNASIO" / "TU LOGO AQUÍ". */
+/** Logo completo: marca + leyenda. En la muestra: "GYM" / "TU LOGO AQUÍ". */
 export function Logo({ size = 'sm', accent }: { size?: 'sm' | 'lg'; accent?: string }) {
   return (
-    <div className={styles.logo} data-size={size} role="img" aria-label="Tu gimnasio">
+    <div className={styles.logo} data-size={size} role="img" aria-label="Logo del gimnasio">
       <LogoMark height={size === 'lg' ? 150 : 30} accent={accent} />
-      <div className={styles.words}>
-        <span className={styles.name}>TU GIMNASIO</span>
-        <span className={styles.tag}>TU LOGO AQUÍ</span>
-      </div>
+      <span className={styles.tag}>TU LOGO AQUÍ</span>
     </div>
   )
 }

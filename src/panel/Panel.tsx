@@ -24,10 +24,7 @@ export function Panel() {
       <header className={styles.side}>
         <div className={styles.brand}>
           <LogoMark height={34} />
-          <div className={styles.brandText}>
-            <span className={styles.brandName}>TU GIMNASIO</span>
-            <span className={styles.brandTag}>PANEL DEL PROFE</span>
-          </div>
+          <span className={styles.brandTag}>PANEL DEL PROFE</span>
         </div>
         <nav className={styles.nav} aria-label="Panel">
           <NavLink to="/panel" end className={styles.link}>

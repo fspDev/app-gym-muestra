@@ -30,10 +30,7 @@ export function Ingreso() {
     <div className={styles.page}>
       <div className={styles.brand}>
         <LogoMark height={64} />
-        <div>
-          <div className={styles.name}>TU GIMNASIO</div>
-          <div className={styles.tag}>TU LOGO AQUÍ</div>
-        </div>
+        <div className={styles.tag}>TU LOGO AQUÍ</div>
       </div>
       {modo === 'entrar' && <Muestra />}
       {modo === 'entrar' ? (

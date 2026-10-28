@@ -59,10 +59,11 @@ export const StoryCard = forwardRef<HTMLDivElement, { data: StoryData }>(functio
             <div className={styles.recordValue}>{data.series}</div>
           </div>
         )}
-        <div className={styles.footer}>
-          <span>TU GIMNASIO</span>
-          {data.streak > 0 && <span>{data.streakLabel}</span>}
-        </div>
+        {data.streak > 0 && (
+          <div className={styles.footer}>
+            <span>{data.streakLabel}</span>
+          </div>
+        )}
       </div>
     </div>
   )

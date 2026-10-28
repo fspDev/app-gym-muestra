@@ -16,8 +16,8 @@ export default defineConfig({
       registerType: 'prompt',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Tu Gimnasio (muestra)',
-        short_name: 'Tu Gimnasio',
+        name: 'GYM (muestra)',
+        short_name: 'GYM',
         id: base,
         description: 'Tu plan de entrenamiento, armado por tu profe.',
         lang: 'es-AR',

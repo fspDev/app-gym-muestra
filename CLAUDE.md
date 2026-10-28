@@ -4,7 +4,7 @@ App de entrenamiento para mostrarle a dueños de gimnasios. Dos tipos de usuario
 - **Socios** (la app, `/`): ven el plan que les armó el profe y lo entrenan bloque por bloque (series con peso y descanso, bici por tiempo, circuitos, ventana flotante, elegir otro ejercicio si la máquina está ocupada, progreso y récords). Cada ejercicio puede traer una indicación y un video de YouTube.
 - **Profes** (`/panel`): dan de alta socios, arman y publican planes, ven el historial de planes, el registro de cada entreno, la evolución y las cuotas. Manejan la biblioteca de ejercicios y pueden sumar otros profes.
 
-Sale del código del 653 Gym & Fitness (`D:\Desktop\GymApp\app`, rama `am`), sin su marca: logo de muestra "GYM" / "TU GIMNASIO" / "TU LOGO AQUÍ" y acento azul `#2f5bff`.
+Sale del código del 653 Gym & Fitness (`D:\Desktop\GymApp\app`, rama `am`), sin su marca: logo de muestra "GYM" / "TU LOGO AQUÍ" y acento azul `#2f5bff`.
 
 ## Sin servidor
 
