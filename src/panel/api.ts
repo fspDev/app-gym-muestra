@@ -1,4 +1,5 @@
 import { authApi, store } from '../backend'
+import { AVISO, LIMITES, LimiteMuestra } from '../backend/limites'
 import { AuthError, type WriteOp } from '../backend/types'
 import { emailFor, nextFreeUsername, usernameFrom } from '../cuentas'
 import { estadoCuota, type CuotaConfig, type EstadoCuota, type Pago } from '../cuotas'
@@ -154,6 +155,7 @@ export interface AltaDatos {
 export async function altaEstudiante(d: AltaDatos): Promise<{ sid: string; username: string }> {
   const base = usernameFrom(d.nombre, d.apellido)
   if (!base) throw new Error('Falta el nombre.')
+  if ((await store.list(COL.students)).filter((s) => !esFichaProfe(s.id)).length >= LIMITES.maxSocios) throw new LimiteMuestra(AVISO.socios)
   // Usuarios ya tomados (pocos estudiantes: se pregunta de a uno).
   const taken = new Set<string>()
   for (let u = base, n = 2; ; u = `${base}${n++}`) {
@@ -187,6 +189,7 @@ export async function altaEstudiante(d: AltaDatos): Promise<{ sid: string; usern
  * nueva y el usuario pasa a entrar con esa. Su ficha, plan e historial no se tocan.
  */
 export async function resetClave(e: Estudiante, clave: string): Promise<void> {
+  if (LIMITES.clavesFijas) throw new LimiteMuestra(AVISO.clave)
   const { uid, email } = await crearCuenta(e.username, clave, numeroDe(e.email) + 1)
   await store.write([
     { type: 'update', path: sPath(e.id), data: { uid, email } },
@@ -409,6 +412,7 @@ export async function cargarAdmins(): Promise<AdminInfo[]> {
 export async function altaAdmin(d: { nombre: string; apellido: string; clave: string }): Promise<{ username: string }> {
   const base = usernameFrom(d.nombre, d.apellido)
   if (!base) throw new Error('Falta el nombre.')
+  if ((await store.list(COL.admins)).length + 1 >= LIMITES.maxProfes) throw new LimiteMuestra(AVISO.profes)
   const taken = new Set<string>()
   for (let u = base, n = 2; ; u = `${base}${n++}`) {
     if (!(await store.get(`${COL.logins}/${u}`))) break

@@ -13,18 +13,31 @@ import '@fontsource/inter/latin-700.css'
 import './index.css'
 import { AuthProvider } from './auth/AuthProvider.tsx'
 import App from './App.tsx'
+import { prepararMuestra } from './backend/demo'
+import { muestraVencida } from './backend/limites'
 import { getSettings } from './settings'
 import { applyPalette } from './theme'
+import { MuestraVencida } from './ui/MuestraVencida'
 
-// Antes de pintar: así no aparece un instante con los colores por defecto.
-applyPalette(getSettings().paleta)
+async function arrancar() {
+  // Si la muestra lleva más de un día en este navegador, vuelve sola a los datos de ejemplo.
+  await prepararMuestra()
+  // Antes de pintar: así no aparece un instante con los colores por defecto.
+  applyPalette(getSettings().paleta)
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </BrowserRouter>
-  </StrictMode>,
-)
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      {muestraVencida(Date.now()) ? (
+        <MuestraVencida />
+      ) : (
+        <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </BrowserRouter>
+      )}
+    </StrictMode>,
+  )
+}
+
+void arrancar()

@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useAuth } from '../auth/context'
 import { store } from '../backend'
+import { AVISO } from '../backend/limites'
 import { problemaClave } from '../cuentas'
 import { estadoCuota, estadoLabel, fmtPesos, type CuotaConfig } from '../cuotas'
 import { COL } from '../collections'
@@ -269,7 +270,7 @@ function CambiarClave() {
       setRepetir('')
       setOpen(false)
     } else {
-      setMsg({ ok: false, text: r.reason === 'datos' ? 'La contraseña actual no es esa.' : r.reason === 'red' ? 'No hay conexión.' : 'No se pudo cambiar. Probá de nuevo.' })
+      setMsg({ ok: false, text: r.reason === 'datos' ? 'La contraseña actual no es esa.' : r.reason === 'red' ? 'No hay conexión.' : r.reason === 'muestra' ? AVISO.clave : 'No se pudo cambiar. Probá de nuevo.' })
     }
   }
 

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react
 import { Link } from 'react-router-dom'
 import { generarClave, problemaClave, usernameFrom } from '../cuentas'
 import { estadoLabel, DEFAULT_CUOTA } from '../cuotas'
+import { AVISO, LIMITES } from '../backend/limites'
 import { altaEstudiante, loadEstudiantes, type AltaDatos } from './api'
 import { Credenciales, Dialog } from './Dialog'
 import styles from './Estudiantes.module.css'
@@ -35,6 +36,7 @@ export function Estudiantes() {
   useEffect(load, [load])
 
   const visible = useMemo(() => (rows ?? []).filter((r) => matches(r, filtro, query)), [rows, filtro, query])
+  const lleno = (rows?.length ?? 0) >= LIMITES.maxSocios
   const vencidas = rows ? countBy(rows, 'cuota') : 0
   const semana = rows?.filter((r) => r.semana > 0).length ?? 0
 
@@ -46,8 +48,9 @@ export function Estudiantes() {
           <div className={ui.sub}>
             {rows ? `${rows.length} ${rows.length === 1 ? 'estudiante' : 'estudiantes'} · ${semana} entrenaron esta semana${vencidas ? ` · ${vencidas} con la cuota vencida` : ''}` : 'Cargando…'}
           </div>
+          {lleno && <div className={ui.hint}>{AVISO.socios}</div>}
         </div>
-        <button className={ui.primary} onClick={() => setAlta(true)}>
+        <button className={ui.primary} disabled={lleno} onClick={() => setAlta(true)}>
           + NUEVO ESTUDIANTE
         </button>
       </div>

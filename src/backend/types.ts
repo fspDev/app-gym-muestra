@@ -34,7 +34,7 @@ export interface AuthUser {
   email: string
 }
 
-export type AuthErrorCode = 'datos' | 'red' | 'muchos' | 'existe' | 'debil' | 'otro'
+export type AuthErrorCode = 'datos' | 'red' | 'muchos' | 'existe' | 'debil' | 'muestra' | 'otro'
 
 export class AuthError extends Error {
   code: AuthErrorCode

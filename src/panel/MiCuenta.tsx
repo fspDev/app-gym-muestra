@@ -4,6 +4,7 @@ import { useAuth } from '../auth/context'
 import { normalizeUsername, problemaClave } from '../cuentas'
 import { updateSettings, useSettings } from '../settings'
 import { PALETTES } from '../theme'
+import { LimiteMuestra, AVISO } from '../backend/limites'
 import { altaAdmin, bajaAdmin, cargarAdmins, guardarCuentaProfe, type AdminInfo } from './api'
 import styles from './MiCuenta.module.css'
 import ui from './ui.module.css'
@@ -117,7 +118,7 @@ function Clave() {
       setActual('')
       setNueva('')
       setRepetir('')
-    } else setMsg({ ok: false, text: r.reason === 'datos' ? 'La contraseña actual no es esa.' : r.reason === 'red' ? 'No hay conexión.' : 'No se pudo cambiar.' })
+    } else setMsg({ ok: false, text: r.reason === 'datos' ? 'La contraseña actual no es esa.' : r.reason === 'red' ? 'No hay conexión.' : r.reason === 'muestra' ? AVISO.clave : 'No se pudo cambiar.' })
   }
 
   return (
@@ -182,7 +183,7 @@ function Admins() {
       setClave('')
       recargar()
     } catch (err) {
-      setMsg({ ok: false, text: err instanceof Error && err.message === 'Falta el nombre.' ? err.message : 'No se pudo crear. Probá de nuevo.' })
+      setMsg({ ok: false, text: err instanceof LimiteMuestra || (err instanceof Error && err.message === 'Falta el nombre.') ? err.message : 'No se pudo crear. Probá de nuevo.' })
     }
     setBusy(false)
   }

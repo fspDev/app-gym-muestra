@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { generarClave, problemaClave } from '../cuentas'
+import { LimiteMuestra } from '../backend/limites'
 import { bajaEstudiante, resetClave, updateFicha } from './api'
 import { Credenciales, Dialog } from './Dialog'
 import type { TabProps } from './Estudiante'
@@ -148,8 +149,8 @@ function ResetDialog({ d, onClose }: Pick<TabProps, 'd'> & { onClose: () => void
           try {
             await resetClave(d.e, clave)
             setHecho(true)
-          } catch {
-            setError('No se pudo cambiar. Revisá la conexión y probá de nuevo.')
+          } catch (err) {
+            setError(err instanceof LimiteMuestra ? err.message : 'No se pudo cambiar. Revisá la conexión y probá de nuevo.')
           }
           setBusy(false)
         }}

@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom'
 import { problemaClave, usernameFrom } from '../cuentas'
 import { LogoMark } from '../ui/Logo'
 import { reiniciarMuestra } from '../backend/demo'
+import { AVISO, LIMITES } from '../backend/limites'
 import { DEMO_CLAVE } from '../backend/demoSeed'
 import { useAuth, type LoginResult } from './context'
 import styles from './Auth.module.css'
@@ -15,6 +16,7 @@ const MESSAGES: Record<Reason, string> = {
   muchos: 'Demasiados intentos. Esperá unos minutos.',
   existe: 'Ya existe esa cuenta.',
   debil: 'La contraseña es muy corta.',
+  muestra: AVISO.clave,
   'ya-hay-profe': 'La cuenta del profe ya está creada: entrá con tu usuario.',
   otro: 'No pudimos hacerte entrar. Probá de nuevo.',
 }
@@ -54,7 +56,7 @@ function Muestra() {
   return (
     <div className={styles.demo}>
       <div className={styles.demoTitle}>VERSIÓN DE MUESTRA</div>
-      <p className={styles.demoText}>Probala como el profe (panel: socios, planes, cuotas) o como un socio (la app para entrenar). Los datos son de ejemplo y quedan solo en este navegador.</p>
+      <p className={styles.demoText}>Probala como el profe (panel: socios, planes, cuotas) o como un socio (la app para entrenar). Los datos son de ejemplo, quedan solo en este navegador y se reinician cada {LIMITES.vigenciaHoras} horas.</p>
       <div className={styles.demoBtns}>
         <button type="button" className={styles.demoBtn} disabled={busy} onClick={() => void entrar('profe')}>
           ENTRAR COMO PROFE

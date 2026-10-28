@@ -1,5 +1,6 @@
 import { AuthError, type AuthApi, type AuthUser, type Backend, type Data, type Store } from './types'
 import { demoSeed } from './demoSeed'
+import { reinicioPendiente } from './limites'
 
 /**
  * Servidor de muestra: la app funciona entera en el navegador, con datos de ejemplo.
@@ -160,14 +161,13 @@ const auth: AuthApi = {
     await wait()
     return create(email, password)
   },
-  async changePassword(cur, next) {
+  async changePassword(cur) {
     await wait()
     const me = current()
     const u = me ? st().users[me.email] : null
     if (!me || !u || u.password !== cur) throw new AuthError('datos')
-    if (next.length < 6) throw new AuthError('debil')
-    u.password = next
-    save(st())
+    // En la muestra las contraseñas de ejemplo no se tocan: si no, el que la recibe no podría entrar.
+    throw new AuthError('muestra')
   },
 }
 
@@ -181,19 +181,52 @@ export function resetDemo() {
   setCurrent(null)
 }
 
-/** Vuelve a los datos de ejemplo: borra todo lo de la muestra guardado en este navegador y recarga. */
-export function reiniciarMuestra() {
+/** Borra todo lo de la muestra guardado en este navegador (la próxima carga vuelve a los datos de ejemplo). */
+function limpiarMuestra(): Promise<void> {
   try {
     for (const k of Object.keys(localStorage)) if (k.startsWith('gym:')) localStorage.removeItem(k)
     for (const k of Object.keys(sessionStorage)) if (k.startsWith('gym:')) sessionStorage.removeItem(k)
   } catch {
     /* sin acceso al almacenamiento: no hay nada guardado */
   }
-  const done = () => location.reload()
+  return new Promise((resolve) => {
+    try {
+      const r = indexedDB.deleteDatabase('gym-muestra')
+      r.onsuccess = r.onerror = r.onblocked = () => resolve()
+    } catch {
+      resolve()
+    }
+  })
+}
+
+/** Vuelve a los datos de ejemplo y recarga. */
+export function reiniciarMuestra() {
+  void limpiarMuestra().then(() => location.reload())
+}
+
+const DESDE = 'gym:demo-desde'
+
+/**
+ * Se llama antes de pintar. Si la muestra lleva más de `LIMITES.vigenciaHoras` en este navegador, vuelve sola
+ * a los datos de ejemplo; si no, solo anota desde cuándo corre.
+ */
+export async function prepararMuestra(ahora = Date.now()): Promise<void> {
+  let desde: number | null = null
   try {
-    const r = indexedDB.deleteDatabase('gym-muestra')
-    r.onsuccess = r.onerror = r.onblocked = done
+    const raw = Number(localStorage.getItem(DESDE))
+    desde = Number.isFinite(raw) && raw > 0 ? raw : null
   } catch {
-    done()
+    /* sin almacenamiento: no hay nada que vencer */
+  }
+  if (reinicioPendiente(desde, ahora)) {
+    await limpiarMuestra()
+    desde = null
+  }
+  if (desde === null) {
+    try {
+      localStorage.setItem(DESDE, String(ahora))
+    } catch {
+      /* nada */
+    }
   }
 }
